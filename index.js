@@ -1,16 +1,33 @@
 let score = 0;
+let playerSelection = '';
+
+let rockBtn = document.querySelector('#rock');
+let paperBtn = document.querySelector('#paper');
+let scissorsBtn = document.querySelector('#scissors');
+
+let myScore = document.querySelector('#myScore');
+let pcScore = document.querySelector('#pcScore');
+
+let match = document.querySelector('#match');
+
+myScore.innerHTML = 0;
+pcScore.innerHTML = 0;
 
 function playRound(playerSelection, computerSelection) {
     if ((playerSelection === "rock" && computerSelection === "paper") || (playerSelection === "paper" && computerSelection === "scissors") || (playerSelection === "scissors" && computerSelection === "rock")) {
-        score--;
+        myScore.innerHTML = parseInt(myScore.innerHTML) - 1;
+        pcScore.innerHTML = parseInt(pcScore.innerHTML) + 1;
+        ;
     }
     else if ((playerSelection === "rock" && computerSelection === "scissors") || (playerSelection === "paper" && computerSelection === "rock") || (playerSelection === "scissors" && computerSelection === "paper")){
-        score++;
+        myScore.innerHTML = parseInt(myScore.innerHTML) + 1;
+        pcScore.innerHTML = parseInt(pcScore.innerHTML) - 1;
     }
-    else if (playerSelection === computerSelection) {
-        score;
+    else if (playerSelection === computerSelection){
+        myScore.innerHTML = parseInt(myScore.innerHTML);
+        pcScore.innerHTML = parseInt(pcScore.innerHTML);
     }
-}
+};
 
 function getComputerChoice() {
     let random = Math.floor(Math.random() * 3)
@@ -19,19 +36,35 @@ function getComputerChoice() {
         case 1: return 'paper'
         case 2: return 'scissors'
     }
-}
+};
 
 function playGame() {
-    for (let round = 0; round < 5; round++) {
-        let playerSelection = prompt();
-        playerSelection = playerSelection.toLowerCase();
-        console.log("I've chosen " + playerSelection);
-        let computerSelection = getComputerChoice();
-        console.log('PC choose ' + computerSelection);
-        playRound(playerSelection, computerSelection);
-        console.log(score);
+    if (parseInt(myScore.innerHTML) === 5){
+        match.innerHTML = 'You win!';
     }
-    return score;
-}
+    else if (parseInt(pcScore.innerHTML) === 5){
+        match.innerHTML = 'The PC wins!';
+    }
+    else{
+        match.innerHTML = '';
+        match.innerHTML = "I've chosen " + playerSelection;
+        let computerSelection = getComputerChoice();
+        match.innerHTML += 'PC choose ' + computerSelection;
+        playRound(playerSelection, computerSelection);
+    }
+};
 
-playGame();
+rockBtn.addEventListener('click', () => {
+    playerSelection = 'rock';
+    playGame();
+});
+
+paperBtn.addEventListener('click', () => {
+    playerSelection = 'paper';
+    playGame();
+});
+
+scissorsBtn.addEventListener('click', () => {
+    playerSelection = 'scissors';
+    playGame();
+});
